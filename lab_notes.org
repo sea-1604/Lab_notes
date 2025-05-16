@@ -1,0 +1,1036 @@
+#+Title: LAB diary for Thesis project
+#+Author: Santiago Enriquez 
+
+* 2024june3 - using orgmode example and runing on VS terminal
+** installing org-mode 
+
+    Started looking for ways to install org-mode to use it on windows
+
+*** Found an orgm-mode extention on VS
+
+This extention is still in alpha but seems to work fine for now
+
+** org-mode tried on the meeting
+*** checking if htm.bindings is working 
+
+conda create --name <environment_name> - python3.10
+
+conda activate engn1220
+
+ipython
+
+import htm
+import htm.bindings
+
+# both work on ipython in the conda environment 
+
+** trying on VS terminal
+    The README of htm.core says that htm.core should be run in anacoda prompt and not the powershell on windows
+
+    VS terminal runs the powershell which is a problem when using VS to work on htm.core
+
+*** looking for a way to make the terminal of VS run anacoda prompt instead of powershell
+    Open the Command Palette ( Ctrl+Shift+P ) >> type Python: Select Interpreter >> Python 3.10.13 ('engn1220') # the environment for the project
+
+    # this seems to work when launching ipython in the VS terminal and running import htm.bindings (the one that gave problems earlier)
+
+* 2024june5-2024june7 - trying to run path_integration location network
+
+** Different problems when running the script at different times
+    Ended up deleting and reinstalling htm.core and stop giving problems.
+
+    Probably htm.core wasn't installed properlly and the deleting and reinstalling solved the problem
+
+* 2024june11 - running multi_column_convergerance example (union path integration example)
+** Error "config file experiments.cfg not found"
+
+* 2024june28 - running files of htm core
+
+    Make sure to always be on the directory of the script being run.
+
+    This has solved previous problem of not finding the config file
+** New error
+
+
+** creating a conda environment with python 3.11.1 (version tested for htm.core) in anaconda prompt for windows
+
+    conda create -n htm_python_3.11.1 python=3.11.1
+    conda activate htm_python_3.11.1
+    Open the Command Palette ( Ctrl+Shift+P ) >> type Python: Select Interpreter >> Python 3.11.1 ('htm_python_3.11.1') (for interpreter u=in VisualStudio)
+
+
+* 2024july08 - Creating new environments and running multi_column_convergerance.py
+** environment  python 3.11.1
+*** Requirementes in the environment (run from the anaconda prompt, and make the installation on the path of htm.core)
+    conda install matplotlib
+    conda install ipython
+    python3 -m ensurepip --upgrade
+    python3 -m pip install setuptools packaging
+    pip install -r requirements.txt
+    ipython setup.py install
+
+*** Error running multi_column_convergerance
+    ModuleNotFoundError: No module named 'htm.bindings.engine_internal'
+
+** environment python 3.8
+    creating environment: conda create -n htm_python_3.8 python=3.8
+    conda activate htm_python_3.8
+    Open the Command Palette ( Ctrl+Shift+P ) >> type Python: Select Interpreter >> Python 3.8 ('htm_python_3.8') (for interpreter u=in VisualStudio)
+
+*** Requirementes in the environment (run from the anaconda prompt, and make the installation on the path of htm.core)
+    conda install matplotlib
+    conda install ipython
+    python3 -m ensurepip --upgrade
+    python3 -m pip install setuptools packaging
+    pip install -r requirements.txt
+    ipython setup.py install
+
+*** Error running multi_column_convergerance
+    ModuleNotFoundError: No module named 'htm.bindings.engine_internal'
+
+* 2024july09 - Running thing_classification instead of multi_column_convergerance
+** Running on environment 3.8
+    Go to the path of thing_classification
+
+*** Error
+    ModuleNotFoundError: No module named 'htm.bindings.encoders'
+
+
+** Notes on the Errors from last day and today
+    When importing directly onto ipython htm.bindings this does no give an error but when running both thing_classification and 
+    multi_column_convergerance it looks like it can never find other modules from htm.bindings
+
+* 2024august20 - bindings
+    Bindings is an outproduct of running the setup.py given in the github code but for some reason most modules that should come with are not being
+    installed and thus why they are never found when running other scripts.
+
+    # I don't know whether this is a problem that comes from an unsuccessful installation or something different that I am missing
+
+* 2024september18 - reinstalling
+** download C++ compiler
+compiler --> Visual Studio 2022
+
+** download CMake 3.26.3
+#chose this version to be compatible with both htm_core and Oscar
+https://github.com/Kitware/CMake/releases/tag/v3.26.3
+
+** environment python 3.12.4
+    creating environment: 
+    conda create -n htm_3.12.4 python=3.12.4
+    conda activate htm_3.12.4
+
+*** prerequisites
+    python3 -m ensurepip --upgrade
+    python3 -m pip install setuptools packaging
+    pip install -r requirements.txt #(on requirements.txt substitute "numpy == 1.23" with "numpy>=2.1.1")
+    pip install ipython
+    conda install matplotlib
+
+*** intalling
+    # On Anaconda prompt run the next line
+    python3 setup.py install
+
+** Running multi_column_convergerance.py
+    looks like module not found errors are solved and the script starts running before giving a new error
+
+*** Before the error proving it has started the script shows this
+    Sensation by Columns/num_features5.0num_cortical_columns1.0 : 0
+    Sensation by Columns/num_features5.0num_cortical_columns1.0 : 4
+    Sensation by Columns/num_features5.0num_cortical_columns2.0 : 3
+    # every time it is runned it gives a different number of lines 
+
+*** New Error
+    The above exception was the direct cause of the following exception:
+
+    RuntimeError                              Traceback (most recent call last)
+    File ~\Documents\tesis\htm.core-master\py\htm\advanced\examples\union_path_integration\multi_column_convergence.py:403
+        400 registerAllAdvancedRegions()
+        402 suite = MultiColumnExperiment()
+    --> 403 suite.start()
+        405 experiments = suite.options.experiments
+        406 if experiments is None:
+
+    File ~\anaconda3\envs\htm_3.12.4\Lib\site-packages\htm.core-2.1.16-py3.12-win-amd64.egg\htm\advanced\support\expsuite.py:576, in PyExperimentSuite.start(self)
+        573         params['name'] = exp
+        574         paramlist.append(params)
+    --> 576 self.do_experiment(paramlist)
+
+    File ~\anaconda3\envs\htm_3.12.4\Lib\site-packages\htm.core-2.1.16-py3.12-win-amd64.egg\htm\advanced\support\expsuite.py:609, in PyExperimentSuite.do_experiment(self, params)
+        606 else:
+        607     # create worker processes
+        608     pool = Pool(processes=self.options.ncores)
+    --> 609     pool.map(mp_runrep, explist)
+        611 return True
+
+    File ~\anaconda3\envs\htm_3.12.4\Lib\multiprocessing\pool.py:367, in Pool.map(self, func, iterable, chunksize)
+        362 def map(self, func, iterable, chunksize=None):
+        363     '''
+        364     Apply `func` to each element in `iterable`, collecting the results
+        365     in a list that is returned.
+        366     '''
+    --> 367     return self._map_async(func, iterable, mapstar, chunksize).get()
+
+    File ~\anaconda3\envs\htm_3.12.4\Lib\multiprocessing\pool.py:774, in ApplyResult.get(self, timeout)
+        772     return self._value
+        773 else:
+    --> 774     raise self._value
+
+    RuntimeError: Exception: RegionImplFactory.cpp(213) message: getSpec() -- unknown node type: 'py.RawSensor'.  Custom node types must be registed before they can be used.
+
+* 2024september25 - Solution offered by Krishan
+    # Aparently the htm code has given a lot of problems in different versions of Python
+    # The version that our lab has found to work properly is the python 3.7
+
+** Creating an environment for htm with python 3.7
+    # Remember to navegate to the directory your htm code is in
+    conda create -n htm_3.7 python=3.7
+    conda activate htm_3.7
+
+*** prerequisites
+    python3 -m ensurepip --upgrade
+    python3 -m pip install setuptools==65.5.1 packaging==22.0 # Installs the most recent compatible versions of each package
+    pip install -r requirements.txt # (for this version we need in requirements.txt to set numpy to version 1.21.6 "numpy == 1.21.6")
+    pip install ipython
+    pip install matplotlib==3.5.3
+
+*** intalling
+    python3 setup.py install
+
+* 2024september29 - Changing the requirements.txt file
+
+    # I'm trying to make the aproach of changing every version of the requierements.txt to an specific version for each package
+** First try requirements.txt
+    ## For python 3.7
+
+    # See http://www.pip-installer.org/en/latest/requirements.html for details
+    setuptools<60.0.0 # needed for Windows with MSVC
+    pip==22.3.1
+    wheel==0.38.4
+    cmake>=3.14 #>=3.7, >=3.14 needed for MSVC 2019, >=3.21 needed for MSVC 2022
+    ## for python bindings (in /bindings/py/)
+    numpy==1.21.6   # For a newer numpy such as V2.x, you must be running at least Python 3.9
+    pytest<=7.2.0 #4.6.x series is last to support python2, once py2 dropped, we can switch to 5.x 
+    ## for python code (in /py/)
+    hexy>=1.4.4 # for grid cell encoder
+    mock>=3.3 # for anomaly likelihood test
+    prettytable>=3.5.0 # for monitor-mixin in htm.advanced (+its tests)
+    ## optional dependencies, such as for visualizations, running examples
+    # should be placed in setup.py section extras_require. Install those by
+    # pip install htm.core[examples] 
+    requests
+
+** Second try requierements.txt
+    # See http://www.pip-installer.org/en/latest/requirements.html for details
+    setuptools>=34.4.0 # needed for Windows with MSVC
+    pip>=22.3.1
+    wheel>=0.38.4
+    cmake>=3.14 #>=3.7, >=3.14 needed for MSVC 2019, >=3.21 needed for MSVC 2022
+    ## for python bindings (in /bindings/py/)
+    numpy<=1.20.0   # For a newer numpy such as V2.x, you must be running at least Python 3.9
+    pytest>=4.6.5 #4.6.x series is last to support python2, once py2 dropped, we can switch to 5.x 
+    ## for python code (in /py/)
+    hexy>=1.4.4 # for grid cell encoder
+    mock>=3.3 # for anomaly likelihood test
+    prettytable>=3.5.0 # for monitor-mixin in htm.advanced (+its tests)
+    ## optional dependencies, such as for visualizations, running examples
+    # should be placed in setup.py section extras_require. Install those by
+    # pip install htm.core[examples] 
+    requests
+
+** build again the environment with python 3.7
+
+    conda create -n htm_3.7 python=3.7
+    conda activate htm_3.7
+
+*** prerequisites
+    python3 -m ensurepip --upgrade
+    pip install -r requirements.txt 
+    python3 -m pip install setuptools==65.5.1 packaging==22.0
+    pip install ipython
+    pip install matplotlib==3.5.3
+
+*** intalling
+
+    python setup.py install
+    python setup.py test
+
+* 2024october25 - Oscar
+** load anaconda on Oscar
+        inside the Oscar terminal:
+        module load anacanda or miniconda # lets you use anaconda comands in the Oscar terminal
+        # Close terminal and open it again to run the environment
+
+* 2024october30 - Oscar environment build up
+** creating environment: 
+conda create -n htm_3.12.4 python=3.12.4
+conda activate htm_3.12.4
+
+*** prerequisites
+python3 -m ensurepip --upgrade
+python3 -m pip install setuptools packaging
+pip install -r requirements.txt # (on requirements.txt substitute "numpy == 1.23" with "numpy>=2.1.1")
+pip install ipython
+conda install matplotlib=3.8
+
+module load cmake
+module load gcc 
+
+*** intalling
+    python3 setup.py install
+
+** Error when running setup.py with cmake
+I don't know why the error appears since the cmake version of oscar should be ok.
+Mabe is the C++ compailer (gcc) but I am not sure or know what should be fixed.
+
+* 2024november5 - Making a simple model of the problem
+I leaving the installation a side for the moment.
+# trying to make a simple model of the temporal memory research (blindly since I can't verify if it works)
+
+** Path
+the script is going to be located in: htm.core-master\py\htm\advanced\tm_location\first_model.py
+** The location signal
+If we make the sequence to infer into an object we should give each part of the sequence a location (number from 0 to the length of the sequence)
+Since the sequence can only expand into one dimension the location vector of each part will be: 
+location = [sequence_place, 0.] 
+hence the displacements will be:
+displacement = [new_location - previous_location, 0.]
+
+The idea for the model would be a connection between all neurons that represent the elements of the sequence and the predicting factor
+(the one that activates the neurons next to fire) would be the location signal given.
+
+Example: 
+The sequence the model has learnd is ABCD with the following location signals for each element: A [0, 0], B [1, 0], C [2, 0], D [3, 0]
+Now for the model to predict the x element in the sequence we will give it an element with its location and afterwards only displacement vector 
+(the distance of the new location from the previous element, i.e. displacement of D from B [3 - 1, 0]= [2, 0] so we move to steps to the right)
+for the model to predict which element we are looking for. 
+
+* 2024november16 - Docker build
+** Oscar comands need to know
+interact -q bigmem -n 1 -m 64g  -t 02:00:00 # this is to ask for usage of resources of Oscar (-n number of nodes, -m memory in GB, -t time you want to use it)
+** Docker build
+docker build --build-arg arch=amd64 .
+*** Dockers are not found
+In oscar the command dockers is not found, and I havent seen a way to install it with out permisions
+
+** Original numenta code
+using the original code in python 2.7
+*** Error
+ImportError: No module named pip._internal.cli.main
+
+# This error appears form the first command on the repository to install it (pip install nupic htmresearch)
+
+* 2024november21 - trying Numenta's new code from the 20th of November
+** creating the environment
+conda env create        # does not work locally because it cant find numerous packages but on oscar looks like it works 
+conda init zsh
+interact -q bigmem -n 1 -m 256g  -t 02:00:00
+conda activate tbp.monty
+
+** running the tests
+pytest
+89 test failed but i dont know why 
+
+* 2024november22 - Using WSL2 as an alternative
+** steps to set up
+Open Ubuntu
+write user name and password # same as browns
+cd ton the directory: cd /mnt/c/Users/santi/Documents/tesis
+
+install anaconda in WSL: you can find instructions in here https://gist.github.com/kauffmanes/5e74916617f9993bc3479f401dfec7da 
+my location is /home/senriqu4/anaconda3
+
+*** more information that might be needed: 
+If you'd prefer that conda's base environment not be activated on startup,
+   run the following command when conda is activated:
+
+conda config --set auto_activate_base false
+
+it can be undone by running conda init --reverse $SHELL
+
+*** Using monty code
+For help to install it use the following link https://thousandbrainsproject.readme.io/docs/getting-started
+
+cd /mnt/c/Users/santi/Documents/tesis/tbp.monty
+conda env create
+conda init zsh
+conda activate tbp.monty
+
+**** Test if the installation has been done correctly
+pytest
+168 passed, 1 warning, 14 errors
+Tests failed:
+ERROR tests/unit/base_config_test.py
+ERROR tests/unit/custom_actions_test.py
+ERROR tests/unit/embodied_data_test.py
+ERROR tests/unit/evidence_lm_test.py
+ERROR tests/unit/graph_building_test.py
+ERROR tests/unit/graph_learning_test.py
+ERROR tests/unit/habitat_data_test.py
+ERROR tests/unit/habitat_sim_test.py
+ERROR tests/unit/policy_test.py
+ERROR tests/unit/run_parallel_test.py
+ERROR tests/unit/run_test.py
+ERROR tests/unit/sensor_module_test.py
+ERROR tests/unit/tacto_test.py
+ERROR tests/unit/frameworks/actions/habitat/actuator_test.py
+
+*** Trying again the github code htm.core on WSL2
+Install clang: sudo apt install clang
+sudo apt install build-essential # for gcc, g++ and make
+sudo apt install cmake
+
+git clone https://github.com/htm-community/htm.core
+cd /mnt/c/Users/santi/Documents/tesis/WSL/htm.core-master
+
+conda create -n htm_3.12.4 python=3.12.4
+conda activate htm_3.12.4
+
+python -m ensurepip --upgrade
+python -m pip install setuptools packaging
+pip install -r requirements.txt
+
+python setup.py install
+
+* 2024december2 - working on the solutions
+
+** Trying monty on oscar with more memory power
+*** cpu only
+interact -q bigmem -n 6 -m 256g  -t 02:00:00
+interact -q bigmem -n 20 -m 256g -t 02:00:00
+
+**** 89 test kept failing for crashing while running
+this leads me to believe it is not a memory problem
+
+*** Trying with gpu
+nodes gpu # to view the various GPUs available on Oscar
+
+* 2024december4 - Monty on WSL2 directly created from it
+git clone https://github.com/sea-1604/tbp.monty.git
+cd /mnt/c/Users/santi/Documents/tesis/WSL/tbp.monty
+conda env create
+conda init zsh
+conda activate tbp.monty
+pytest
+
+** same errors as before (ImportError)
+*** Solutions that may work
+force install OpenGL if environment didn't do it
+
+    sudo apt update
+    sudo apt install libopengl0 libopengl-dev
+
+some aditional instalations 
+
+    sudo apt install pciutils
+    sudo apt install mesa-utils
+    sudo apt update
+    sudo apt install nvidia-cuda-toolkit nvidia-utils-460
+
+**** This can be promising research longer on the cuda drivers
+
+** Trying to create the environment on the new version of monty
+environment unable to be made due to packages not found
+looks like the monty version does not work yet for windows for what I gathered
+
+* 2024december12 - Working with the 86th thread in github
+
+adding to the bottom of the environment.yml: - aihabitat::headless 
+# this should help with machines without a display 
+
+on wsl seems to be path errors TypeError: expected str, bytes or os.PathLike object, not NoneType
+# Further investigate
+
+To solve the problem of machines without a display loo into a linux partition in my computer. 
+
+* 2024december13 - Oscar with Cuda
+
+# using Cuda and gpus on Oscar since it improve on WSL
+module load cmake
+module load gcc
+module load cuda
+conda activate tbp.monty (with - aihabitat::headless from december12)
+interact -q gpu -g 1 -n 4 -m 64g  -t 02:00:00
+pytest
+
+1 failed, 317 passed, 481 warnings
+
+** Error
+
+self = <tbp.monty.frameworks.models.feature_location_matching.FeatureGraphLM object at 0x7fb37a123130>
+vote_data = {'neg_object_id_votes': {'new_object0': 0}, 'pos_location_votes': {'new_object0': array([[ 1.01622774e-02,  1.49800395...tion.Rotation object at 0x7fb37a0365d0>, <scipy.sp
+atial.transform._rotation.Rotation object at 0x7fb37a0366c0>, ...]]}}
+    def receive_votes(self, vote_data):
+        """Use votes to remove objects and poses from possible matches.
+    
+        NOTE: Add object back into possible matches if majority of other modules
+                think it is correct? Could help with dealing with noise but may
+                also prevent LMs from narrowing down quickly. Since we are not
+                working with this LM anymore, we probably wont add that.
+    
+        Args:
+            vote_data: positive and negative votes on object IDs + positive
+                votes for locations and rotations on the object.
+        """
+        if (vote_data is not None) and (
+            self.buffer.get_num_observations_on_object() > 0
+        ):
+            current_possible_matches = self.get_possible_matches()
+            for possible_obj in current_possible_matches:
+                if (
+>                   vote_data["neg_object_id_votes"][possible_obj]
+                    > vote_data["pos_object_id_votes"][possible_obj]
+                ):
+E               KeyError: 'new_object1'
+src/tbp/monty/frameworks/models/feature_location_matching.py:153: KeyError
+
+* 2025january8 - running first experiment
+# Following the tutorial instrucctions for first experiment in https://thousandbrainsproject.readme.io/docs/running-your-first-experiment 
+
+** Instead of python use ipython.
+cd benchmarks
+python run.py -e first_experiment become -> ipython run.py -- -e first_experiment  
+
+* 2025january9 - Running on oscar with Desktop
+Running on Oscar only works on terminal directly with the environment with the habitat-sim headless (tbp.monty1 in my case)
+When trying to run it on Oscar's desktop to use the none headless version it crashes continuously. 
+So for now I will keep going with the headless even though it is not used in the original tbp.monty code.
+
+* 2025january11 - Oscar 8cores 30GBs
+environment tbp.monty (the original, without the headless) runs correctly on Oscar using -> Desktop 8 cores, 30 GBs.
+First experiment and Pretraining a model also work fine.
+
+* 2025january14 - Graphing the results from the pretraining tutorial
+
+Error when running the script for graphinng results:
+NotImplementedError: Axes3D currently only supports the aspect argument 'auto'. You passed in 'equal'.
+
+** Creating a new script
+
+creating a new plot_utils.py changing 'equal' to 'auto':
+location tbp.monty/src/tbp/monty/frameworks/utils
+name of the new file: plot_utils_auto.py
+
+*** Make the change in the ploting script from the tutorial: 
+
+from tbp.monty.frameworks.utils.plot_utils import plot_graph --> from tbp.monty.frameworks.utils.plot_utils_auto import plot_graph
+# Both representations of the mug and the banana were done correctly
+
+# with this changes we can see that the both tutorials were done without any complications
+
+* 2025january16 - writen paragraph of interests and ideas.
+
+# This paragraph can befound in google docs.
+
+* Rellenar este hueco de dias con las cosas que he ido haciedo
+
+* 2025january20 - Tutorial 3 an 4
+
+** Tutorial 3
+Evaluating ability of the 1SM 1LM in Identifying the mug and the banana
+
+*** CSV important columns and what they mean 
+# "num_steps" shows how long it took the model to identify each object in each trial.
+# In "results" if there are objects in brackets means that the model wasn't sure about the object but it thought it was the object in the brackets
+# In "primary_performance" mlh stands for most likely hypothesis meaning that the object wasn't sure about the object but its mlh was either confused or correct
+
+** Turtorial 4
+Making a continual learning task.
+Here the model will be trained in 3 differnt epochs. In each epoch we will show the model 2 objects individually. The objects will spawn in a random Rotation
+In each epoch for all objects the model will have 100 steps to identify the object. From here we have to options:
+
+*** The model didn't identified the object
+In this case the model will be allowed to take 1000 more samples from the object to save the object in its memory as a new object. 
+This is what happen in epoch 0
+
+*** The model identified the object
+In this case, againg, the model will be allowed to take another 1000 samples to update its model of the object in its memory. 
+This happen in epochs 1 and 2
+
+*** Visualization
+Visualization can be made through: unsupervised_learning_analysis.py in monty scripts folder
+
+* 2025january22 - Tutorial 5
+In this tutorial we are going to use 5 LM horizontally connected on 2 objects
+
+** Training
+Instead of surface agents now there are distant agents for all LMs 
+*** Motor policy:
+motor_system_config=MotorSystemConfigNaiveScanSpiral(
+            motor_system_args=make_naive_scan_policy_config(step_size=5)
+        ),
+
+*** Configs
+We will used for the configs: FiveLMMontyConfig which is an default dictionary for a FiveLM architecture with distant agents. This deafult architecture has everything
+we need right now so we won't need to modify it for the tutorial, though it can be easily changed.
+
+** Evaluation
+The difference with the previous eval is that this time we have to make copies of an LM eval configuration for all of the LMs in the model
+
+*** Experiments args in the model dict
+experiment_args=EvalExperimentArgs(
+        model_name_or_path=model_path,
+        n_eval_epochs=len(test_rotations),
+        min_lms_match=3,   # Terminate when 3 learning modules makes a decision.
+    ),
+# As soon as 3 LMs agree on what they see the evaluation on that object is terminated ---> Adds robustness
+
+** Visualization
+Visualization can be made through: 5lm_tutorial_models.py in monty scripts folder
+
+* 2025january24-27 - Retraining the tutorial models with more objects
+
+We added fork, spoon, and knife since they are similar objects that can confuse in evaluation
+object_names = ["mug", "banana", "fork", "knife", "spoon"]
+
+** Visualization and Evaluation anomaly
+We used the previous scripts for visualization changing the name of the object being seen.
+
+Not sure why but with the spoon fork and knife the models of this objects are not properly made specially on the 5LM (maybe because distant instead of surface)
+This translates into models being more confused in this objects when evaluating
+
+* 2025february3 - Using a 1LM with distant agent to see if the problem with 5LMs was because of that
+Copy tutorial 2 training and evaluating changing monty_config in training
+New monty config: 
+monty_config=PatchAndViewMontyConfig(
+        monty_args=MontyArgs(num_exploratory_steps=500),
+        motor_system_config=MotorSystemConfigNaiveScanSpiral(
+            motor_system_args=make_naive_scan_policy_config(step_size=5)
+        ),
+    ),
+# We use most of the defaults of PatchAndViewMontyConfig since the default uses HabitatDistantPatchSM
+
+** Comparing Visualizations and conclusion
+We see that the models of the objects for the LM with a distant agent are the same fuzzy models the 5LM had making me think it is because the distant agent
+Eventhough I still don't know why the arquitectures have this problems with the cutlery
+
+*** Is it because they are smaller and thinner objects?
+
+* 2025february7-10 - Build a 2LM architecture similar to the 5LM in the tutorial
+** Training
+*** couple of different imports:
+from tbp.monty.frameworks.config_utils.config_args import (
+    TwoLMMontyConfig,                       # Changed the FiveLMMontyConfig for this one (this gives a default 2LM architecture we can use)
+    MontyArgs,
+    MotorSystemConfigNaiveScanSpiral,
+    PretrainLoggingConfig,
+    get_cube_face_and_corner_views_rotations,
+)        
+
+from tbp.monty.simulators.habitat.configs import (
+    MultiLMMountHabitatDatasetArgs,        # Instead of the predefined FiveLmMountHabitatDatasetArgs use this one, There are not many defferences between them but this is a more generic one
+)
+
+*** Difference in the dict:
+monty_config=TwoLMMontyConfig(                      # Use of the new Config
+        monty_args=MontyArgs(num_exploratory_steps=500),
+        motor_system_config=MotorSystemConfigNaiveScanSpiral(
+            motor_system_args=make_naive_scan_policy_config(step_size=5)
+        ),
+    ),
+    # Set up the environment and agent.
+    dataset_class=ED.EnvironmentDataset,
+    dataset_args=MultiLMMountHabitatDatasetArgs(), # Use of the new mount
+
+** Evaluation
+*** New import
+from tbp.monty.frameworks.config_utils.config_args import (
+    EvalLoggingConfig,
+    TwoLMMontyConfig,
+    MontyArgs,
+    MotorSystemConfigInformedGoalStateDriven, # More capable motor policy
+)
+from tbp.monty.simulators.habitat.configs import (
+    MultiLMMountHabitatDatasetArgs,         # Same as before
+)
+
+*** Change in the dict
+    experiment_args=EvalExperimentArgs(
+        model_name_or_path=model_path,
+        n_eval_epochs=len(test_rotations),
+        min_lms_match=1,   # Terminate when 1 learning modules makes a decision.
+    ),
+
+    monty_config=TwoLMMontyConfig(          # New config 
+        monty_args=MontyArgs(min_eval_steps=20),
+        monty_class=MontyForEvidenceGraphMatching,
+        learning_module_configs=learning_module_configs,
+        motor_system_config=MotorSystemConfigInformedGoalStateDriven(),     # New Motor policy
+    ),
+
+    dataset_args=MultiLMMountHabitatDatasetArgs(), # Use the new mount
+
+* 2025february12-17 - Build two 2LM architecture allow for more training steps
+
+We build the same 2LM  architecture but instead of 500 steps per episode one could take 1000 and the other could take 1500
+
+** Visualization
+Visualization can be done through 2lm_3_objs_x2_steps.py in monty_scripts. Its a similar sript to the tutorials  but adding in each figure all 3 architectures (500spe, 1000spe, and 1500spe)
+We see how the models trained for more steps have better representations of the objects compared to the model trained for 500spe
+
+** Evaluation
+Though we saw more detailed models of the objects there was just a small improve in the architectures speed (though this might be because they were already fast)
+
+* 2025february20 - 2LMs with a distant agent
+Similar built to 2LMs with distant agents but since the Montyargs of TwoLMMontyConfig is only with distant agents we make a personalized built:
+monty_config=SurfaceAndViewMontyConfig(
+        monty_args=MontyArgs(num_exploratory_steps=500),
+        # sensory module configs: one surface patch for training (sensor_module_0),
+        # and one view-finder for initializing each episode and logging
+        # (sensor_module_1).
+        sensor_module_configs=dict(
+            sensor_module_0=dict(
+                sensor_module_class=HabitatSurfacePatchSM,
+                sensor_module_args=dict(
+                    sensor_module_id="patch_0",
+                    # a list of features that the SM will extract and send to the LM
+                    features=[
+                        "pose_vectors",
+                        "pose_fully_defined",
+                        "on_object",
+                        "object_coverage",
+                        "rgba",
+                        "hsv",
+                        "min_depth",
+                        "mean_depth",
+                        "principal_curvatures",
+                        "principal_curvatures_log",
+                        "gaussian_curvature",
+                        "mean_curvature",
+                        "gaussian_curvature_sc",
+                        "mean_curvature_sc",
+                    ],
+                    save_raw_obs=False,
+                ),
+            ),
+            sensor_module_1=dict(
+                sensor_module_class=HabitatSurfacePatchSM,
+                sensor_module_args=dict(
+                    sensor_module_id="patch_1",
+                    # a list of features that the SM will extract and send to the LM
+                    features=[
+                        "pose_vectors",
+                        "pose_fully_defined",
+                        "on_object",
+                        "object_coverage",
+                        "rgba",
+                        "hsv",
+                        "min_depth",
+                        "mean_depth",
+                        "principal_curvatures",
+                        "principal_curvatures_log",
+                        "gaussian_curvature",
+                        "mean_curvature",
+                        "gaussian_curvature_sc",
+                        "mean_curvature_sc",
+                    ],
+                    save_raw_obs=False,
+                ),
+            ),
+            sensor_module_2=dict(
+                sensor_module_class=DetailedLoggingSM,
+                sensor_module_args=dict(
+                    sensor_module_id="view_finder",
+                    save_raw_obs=False,
+                ),
+            ),
+        ),
+        # learning module config: 1 graph learning module.
+        learning_module_configs=dict(
+            learning_module_0=dict(
+                learning_module_class=DisplacementGraphLM,
+                learning_module_args=dict(k=5, match_attribute="displacement"),  # Use default LM args
+            ),
+            learning_module_1=dict(
+                learning_module_class=DisplacementGraphLM,
+                learning_module_args=dict(k=5, match_attribute="displacement"),  # Use default LM args
+            )
+        ),
+        # Motor system config: class specific to surface agent.
+        motor_system_config=MotorSystemConfigCurvatureInformedSurface(),
+
+        sm_to_agent_dict=dict(
+            patch="agent_id_0",
+            view_finder="agent_id_0",
+        ),
+        sm_to_lm_matrix=[[0], [1]], # View finder (sm2) not connected to lm
+        lm_to_lm_vote_matrix=[[1], [0]],
+    ),
+
+    ** Error
+    did not find patch_0
+
+* 2025february26 - Attempts at fixing the surface models
+If we substitute sensromodule_id in the first SM from "patch_0" to "patch" this no longer gives an error but the next SM does
+
+** "Fix"
+If we call both SMs "patch" the model now runs but I don't know if this means they are connectedto the same patch or overriding what they are learning
+
+*** Take a look further into this
+
+* 2025february29 - Starting to write the introduction
+
+* 2025march12 - Surface models
+we are going to park this for a bit, as of right now we still not sure bout what makes the model crash when changing the name of the SMs
+
+** we will to start looking at building stacked LMs and scenes
+
+* 2025march19 - 2lm stack individual objects
+I'm going to make a change in tbp.monty/src/tbp/monty/frameworks/models/monty_base.py
+
+In this script Im going to make a change in 'def _combine_inputs' the change is going to be added in line 263 and marked with a
+comment as # my change start  / finish
+
+# this change is being made because the stacked LMs give an error on the higher LM at the start of the training. This could be because at the start the Lower LM gives no
+# info to the higher LM since it has not yet nothing to give, and since the higher LM is allways expecting info it raises the error. this change should fix this countinuos 
+# expectation
+
+** The change
+if lm_input is None:
+    continue
+
+* 2025march23 - 
+Try the ycb similar object list (for differenciating results) - find them in src/tbp/monty/frameworks/environments/ycb.py
+The cracker and sugar box might be interesting since teh only differenciate by color
+
+* 2025march25 - Skillet lid
+This object seems interesting to see differences between distant and surface agent because mmost of it is transparent.
+name in the YCB: "skillet"
+
+** Surprisingly both agents model the object the same way (missing the transparent parts)
+Has this anything to do with the viewfinder?
+
+* 2025march29 - april1 - making compositional scenes to apply the stackLMs
+The only way I can see on how to make a compositional scene is to use the options to add distractor objects. But not sure if there are difference between using an object as primary or distractor
+
+To do this we use the following:
+object_names = {
+    "targets_list": ["mug"],              #List of primary objects
+    "source_object_list": ["mug", "c_toy_airplane"],        #List of objects that will be used (primary or distractors)
+    "num_distractors": 1                            #For now to make a scene we consider the second object as a distractor 
+}
+
+** Notes
+If we train the models with distractors the architectures makes bad modeling since it doesn't know that the other object is not part of what should be learning_module_
+
+*** We should train the stackLMs in individual objects first an then tested on the compositional scene
+Dont know if this is the correct way to approach the problem.
+maybe we should find a way to learn first and then try to learn again the compositional scene similar to the continual learning task.
+
+**** Still unsure on how to do this making sure is performing what I want
+
+* 2025april3 - view habitat scene
+Created a new file called viewer.py on tbp.monty/benchmarks from https://github.com/facebookresearch/habitat-sim/blob/main/examples/viewer.py
+to see the scene that is being made.
+
+Prompt in ChatGTP to look at for viewing the scene: "Habitat-Sim overview"
+
+** Making a change in class MontyObjectRecognitionExperiment(MontyExperiment):
+change in file /users/senriqu4/tbp.monty/src/tbp/monty/frameworks/experiments/object_recognition_experiments.py
+This change is going to be to be able to see the scene created for training.
+
+Also there is an added import: 
+import cv2
+*** The change is in line 111:
+# My change start
+# This is just for visualizing the scene
+for sensor_module in self.model.sensor_modules:
+    if module.get("sensor_module_id") == "view_finder":
+        raw_obs = self.model.get_observations(observation, sensor_module.sensor_module_id)
+
+        # Convert RGB observation to an image and save
+        rgb_obs = raw_obs["color_sensor"][:, :, :3]  # Assuming you have a color sensor
+        rgb_obs = cv2.cvtColor(rgb_obs, cv2.COLOR_RGB2BGR)  # Convert from RGB to BGR for OpenCV
+        cv2.imwrite("/users/senriqu4/monty_scripts/figures/scene_output.png", rgb_obs)
+
+        break  # Stop the loop once we find the module
+# My change finish
+
+** Alternatives change
+path: /users/senriqu4/tbp.monty/src/tbp/monty/simulators/habitat/simulator.py
+
+*** Change in line 128 and 586
+128: self._sim.start_replay_recording("/users/senriqu4/tbp/scenes/scene_output.json.gz")
+
+586: sim.stop_replay_recording()
+
+didnt work
+
+*** This change is more elavorate
+**** Firts add the folowing imports:
+import gzip
+import json
+
+**** Second. At he end of method add_object:
+# Store object info for replay
+if not hasattr(self, "_replay_objects"):
+    self._replay_objects = []
+
+self._replay_objects.append({
+    "template_handle": obj.handle,
+    "translation": np.array(obj.translation).tolist(),  # Convert Magnum Vector3 to list
+    "rotation": np.array([obj.rotation.scalar, obj.rotation.vector.x, obj.rotation.vector.y, obj.rotation.vector.z]).tolist(), # Quaternion [w, x, y, z]
+    "motion_type": "DYNAMIC" if obj.motion_type == habitat_sim.physics.MotionType.DYNAMIC else "STATIC"
+})
+
+**** Third. Add a new methd called: save_fake_replay
+def save_fake_replay(sim, replay_objects, filename="/users/senriqu4/tbp/scenes/scene_output.json.gz"):
+    objects = []
+    for obj in replay_objects:
+        objects.append({
+            "template_handle": obj["template_handle"],
+            "translation": obj["translation"],
+            "rotation": obj["rotation"],
+            "motion_type": obj["motion_type"]
+        })
+
+    replay = {
+        "keyframes": [{
+            "objects": objects,
+            "agent_state": {
+                "position": [0.0, 1.0, 0.0],  # Customize as needed
+                "rotation": [1.0, 0.0, 0.0, 0.0]
+            },
+            "sensor_states": {}
+        }],
+        "config_settings": {
+            "scene_id": "NONE",
+            "enable_physics": True
+        }
+    }
+
+**** Finally call this method before closing the environment (in method close())
+save_fake_replay(sim, self._replay_objects)
+
+**** Once stored to view it run on the bash:
+habitat-viewer NONE --replay-path /users/senriqu4/tbp/scenes/scene_output.json.gz --enable-physics
+
+# Cannot see the model of the environment dont know why
+
+* 2025april7
+Tried making a new conda envirenment only to use the current version of Habitat-sim and run the scene_output.json.gz
+
+# Still didn't show anything not sure what else to try
+
+* 2025april10 - Focusing on writing from now on
+We are going to use results form the following models trained on object_names = ["knife", "spoon", "fork", "mug", "bowl", "skillet", "c_toy_airplane"]
+
+** Models to run for results:
+*** Training and time it took to train.
+surf_agent_2obj_train,              Time: 41m58.747s        N_objects: 6    Eval time: 3m23.612s
+surf_agent_2obj_unsupervised,       Time: 8m35.973s         N_objects: 2
+dist_agent_5lm_2obj_train,          Time: 8m59.201s         N_objects: 6    Eval time: 1m22.378s             
+dist_agent_2lm_2obj_train,          Time: 3m6.612s          N_objects: 3   
+dist_agent_2lm_objs_train,          Time: 6m10.002s         N_objects: 7    Eval time: 0m39.578s
+dist_2lm_1000_steps_train,          Time: 29m18.750s        N_objects: 7    Eval time: 0m34.909s
+dist_2lm_1500_steps_train,          Time: 89m22.081s        N_objects: 7    Eval time: 0m32.137s
+dist_agent_2lm_stack_train          Time: 25m35.018s        N_objects: 7
+
+* 2025may14 - making a generic architecture class for monty to use it for big networks
+Add this to the /tbp.monty/src/tbp/monty/frameworks/config_utils/config_args.py after FiveLMMontyConfig
+
+This class allows for specifying number of lms per level of the architecture.
+
+@dataclass
+class GenericLMSArchitectureMontyConfig(MontyConfig):              
+    n_horizontal_lms: int = 2
+    n_vertical_lms: int   = 2
+
+    learning_module_configs: Dict = field(default=None)
+    sensor_module_configs:   Dict = field(default=None)
+    sm_to_agent_dict:        Dict = field(default=None)
+    sm_to_lm_matrix:        List = field(default=None)
+    lm_to_lm_matrix:    Optional[List] = field(default=None)
+    lm_to_lm_vote_matrix:    List = field(default=None)
+
+    monty_class: Callable = MontyForEvidenceGraphMatching
+    motor_system_config: Union[dataclass, Dict] = field(
+        default_factory=MotorSystemConfigInformedNoTrans
+    )
+    monty_args: Union[Dict, dataclass] = field(default_factory=MontyArgs)
+
+    def __post_init__(self):
+        total_lms = self.n_horizontal_lms * self.n_vertical_lms
+
+        if self.learning_module_configs is None:
+            self.learning_module_configs = {
+                f"learning_module_{i}": {
+                    "learning_module_class": DisplacementGraphLM,
+                    "learning_module_args": {
+                        "k": 5,
+                        "match_attribute": "displacement",
+                    },
+                }
+                for i in range(total_lms)
+            }
+
+        if self.sensor_module_configs is None:
+            self.sensor_module_configs = {
+                **{
+                    f"sensor_module_{i}": {
+                        "sensor_module_class": HabitatDistantPatchSM,
+                        "sensor_module_args": {
+                            "sensor_module_id": f"patch_{i}",
+                            "features":[
+                                # morphological features (nescessarry)
+                                "pose_vectors",
+                                "pose_fully_defined",
+                                "on_object",
+                                # non-morphological features (optional)
+                                "object_coverage",
+                                "hsv",
+                                "principal_curvatures_log",
+                            ],
+                            "delta_thresholds":{
+                                "on_object": 0,
+                                "n_steps": 100,
+                                "hsv": [0.2, 0.2, 0.2],
+                                "pose_vectors": [np.pi / 4, np.pi * 2, np.pi * 2],
+                                "principal_curvatures_log": [4, 4],
+                                "distance": 0.05,
+                            },
+                            "save_raw_obs":True,
+                        },
+                    }
+                    for i in range(total_lms)
+                },
+                f"sensor_module_{total_lms}": {
+                    "sensor_module_class": DetailedLoggingSM,
+                    "sensor_module_args": {
+                        "sensor_module_id": "view_finder",
+                        "save_raw_obs": True,
+                    },
+                },
+            }
+
+        if self.sm_to_agent_dict is None:
+            self.sm_to_agent_dict = {
+                **{f"patch_{i}": "agent_id_0" for i in range(total_lms)},
+                "view_finder": "agent_id_0",
+            }
+
+        if self.sm_to_lm_matrix is None:
+            self.sm_to_lm_matrix = [[i] for i in range(total_lms)]
+
+        if self.lm_to_lm_matrix is None:
+            self.lm_to_lm_matrix = [
+                [] if idx < self.n_horizontal_lms 
+                else [idx - self.n_horizontal_lms]
+                for idx in range(total_lms)
+            ]
+
+        if self.lm_to_lm_vote_matrix is None:
+            self.lm_to_lm_vote_matrix = [
+                [
+                    row * self.n_horizontal_lms + c2
+                    for c2 in range(self.n_horizontal_lms)
+                    if c2 != col
+                ]
+                for row in range(self.n_vertical_lms)
+                for col in range(self.n_horizontal_lms)
+            ]
+** Error
+ImportError: cannot import name 'GenericLMSArchitectureMontyConfig' from 'tbp.monty.frameworks.config_utils.config_args' (/oscar/home/senriqu4/tbp.monty/src/tbp/monty/frameworks/config_utils/config_args.py)
+
+# This might ocurr because python is loading an older version of config_args
+
+*** Solution
